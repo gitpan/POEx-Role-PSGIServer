@@ -1,0 +1,42 @@
+---
+abstract: 'Encapsulated PSGI server behaviors for POE'
+author:
+  - 'Nicholas Perez <nperez@cpan.org>'
+build_requires:
+  FindBin: 0
+  HTTP::Request::Common: 0
+  Plack: 0
+  Plack::Test::Suite: 0
+  Test::More: 0
+  Test::Requires: 0
+configure_requires:
+  ExtUtils::MakeMaker: 6.31
+generated_by: 'Dist::Zilla version 2.100922'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: POEx-Role-PSGIServer
+recommends: {}
+requires:
+  HTTP::Message::PSGI: 0
+  HTTP::Request: 0
+  HTTP::Status: 0
+  Moose::Autobox: 0
+  MooseX::Declare: 0
+  MooseX::Types: 0
+  MooseX::Types::Moose: 0
+  MooseX::Types::Structured: 0
+  POE::Filter::HTTP::Parser: 0
+  POE::Filter::Map: 0
+  POE::Filter::Stream: 0
+  POEx::Role::Streaming: 0
+  POEx::Role::TCPServer: 0
+  POEx::Types: 0
+  Plack::Util: 0
+  Scalar::Util: 0
+  aliased: 0
+  bytes: 0
+resources:
+  repository: git://github.com/nperez/poex-role-psgiserver.git
+version: 1.101020
