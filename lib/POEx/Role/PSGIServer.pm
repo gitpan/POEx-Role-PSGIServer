@@ -1,6 +1,6 @@
 package POEx::Role::PSGIServer;
 BEGIN {
-  $POEx::Role::PSGIServer::VERSION = '1.101020';
+  $POEx::Role::PSGIServer::VERSION = '1.101040';
 }
 
 #ABSTRACT: Encapsulates core PSGI server behavior
@@ -39,7 +39,7 @@ role POEx::Role::PSGIServer
         my $hash = {};
         $hash->{listen_port} = $args{port} if exists($args{port});
         $hash->{listen_ip} = $args{host} if exists($args{host});
-        return $hash
+        return { %$hash, %args };
     }
 
 
@@ -263,7 +263,7 @@ POEx::Role::PSGIServer - Encapsulates core PSGI server behavior
 
 =head1 VERSION
 
-version 1.101020
+version 1.101040
 
 =head1 SYNOPSIS
 

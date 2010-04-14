@@ -28,7 +28,7 @@ my %WriteMakefileArgs = (
                                            },
                        'ABSTRACT' => 'Encapsulated PSGI server behaviors for POE',
                        'EXE_FILES' => [],
-                       'VERSION' => '1.101020',
+                       'VERSION' => '1.101040',
                        'PREREQ_PM' => {
                                         'MooseX::Types::Moose' => '0',
                                         'Scalar::Util' => '0',
