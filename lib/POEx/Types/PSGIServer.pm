@@ -1,6 +1,6 @@
 package POEx::Types::PSGIServer;
 BEGIN {
-  $POEx::Types::PSGIServer::VERSION = '1.101040';
+  $POEx::Types::PSGIServer::VERSION = '1.102530';
 }
 
 #ABSTRACT: Provides type constraints for use in POEx::Role::PSGIServer
@@ -81,7 +81,7 @@ POEx::Types::PSGIServer - Provides type constraints for use in POEx::Role::PSGIS
 
 =head1 VERSION
 
-version 1.101040
+version 1.102530
 
 =head1 TYPES
 
@@ -118,7 +118,7 @@ This constraint checks responses from PSGI applications for a valid HTTPCode, an
 
 =head1 AUTHOR
 
-  Nicholas Perez <nperez@cpan.org>
+Nicholas Perez <nperez@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 

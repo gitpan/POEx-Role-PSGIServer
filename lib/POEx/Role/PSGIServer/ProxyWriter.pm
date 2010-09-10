@@ -1,6 +1,6 @@
 package POEx::Role::PSGIServer::ProxyWriter;
 BEGIN {
-  $POEx::Role::PSGIServer::ProxyWriter::VERSION = '1.101040';
+  $POEx::Role::PSGIServer::ProxyWriter::VERSION = '1.102530';
 }
 
 #ABSTRACT: Provides a push writer for PSGI applications to use
@@ -43,7 +43,10 @@ class POEx::Role::PSGIServer::ProxyWriter
 
     method poll_cb(CodeRef $coderef)
     {
-        $coderef->($self);
+        my $on_flush = sub { $self->$coderef() };
+        my $id = $self->server_context->{wheel}->ID;
+        $self->proxied->set_wheel_flusher($id => $on_flush);
+        $on_flush->();
     }
 }
 1;
@@ -57,7 +60,7 @@ POEx::Role::PSGIServer::ProxyWriter - Provides a push writer for PSGI applicatio
 
 =head1 VERSION
 
-version 1.101040
+version 1.102530
 
 =head1 PUBLIC_ATTRIBUTES
 
@@ -93,7 +96,7 @@ poll_cb is provided to complete the interface. The first argument to $coderef wi
 
 =head1 AUTHOR
 
-  Nicholas Perez <nperez@cpan.org>
+Nicholas Perez <nperez@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 

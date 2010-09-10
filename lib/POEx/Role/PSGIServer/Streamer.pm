@@ -1,6 +1,6 @@
 package POEx::Role::PSGIServer::Streamer;
 BEGIN {
-  $POEx::Role::PSGIServer::Streamer::VERSION = '1.101040';
+  $POEx::Role::PSGIServer::Streamer::VERSION = '1.102530';
 }
 
 #ABSTRACT: Provides streaming filehandle PSGI implementation
@@ -69,7 +69,7 @@ POEx::Role::PSGIServer::Streamer - Provides streaming filehandle PSGI implementa
 
 =head1 VERSION
 
-version 1.101040
+version 1.102530
 
 =head1 PUBLIC_ATTRIBUTES
 
@@ -101,7 +101,7 @@ _build_filter is overridden to return a L<POE::Filter::Map> filter if the curren
 
 =head1 AUTHOR
 
-  Nicholas Perez <nperez@cpan.org>
+Nicholas Perez <nperez@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
