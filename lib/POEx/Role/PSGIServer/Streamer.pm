@@ -1,6 +1,6 @@
 package POEx::Role::PSGIServer::Streamer;
 BEGIN {
-  $POEx::Role::PSGIServer::Streamer::VERSION = '1.102530';
+  $POEx::Role::PSGIServer::Streamer::VERSION = '1.102531';
 }
 
 #ABSTRACT: Provides streaming filehandle PSGI implementation
@@ -69,7 +69,7 @@ POEx::Role::PSGIServer::Streamer - Provides streaming filehandle PSGI implementa
 
 =head1 VERSION
 
-version 1.102530
+version 1.102531
 
 =head1 PUBLIC_ATTRIBUTES
 

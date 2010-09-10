@@ -1,6 +1,6 @@
 package POEx::Role::PSGIServer::ProxyWriter;
 BEGIN {
-  $POEx::Role::PSGIServer::ProxyWriter::VERSION = '1.102530';
+  $POEx::Role::PSGIServer::ProxyWriter::VERSION = '1.102531';
 }
 
 #ABSTRACT: Provides a push writer for PSGI applications to use
@@ -60,7 +60,7 @@ POEx::Role::PSGIServer::ProxyWriter - Provides a push writer for PSGI applicatio
 
 =head1 VERSION
 
-version 1.102530
+version 1.102531
 
 =head1 PUBLIC_ATTRIBUTES
 

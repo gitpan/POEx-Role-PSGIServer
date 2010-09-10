@@ -1,6 +1,6 @@
 package POEx::Role::PSGIServer;
 BEGIN {
-  $POEx::Role::PSGIServer::VERSION = '1.102530';
+  $POEx::Role::PSGIServer::VERSION = '1.102531';
 }
 
 #ABSTRACT: Encapsulates core PSGI server behavior
@@ -51,11 +51,11 @@ role POEx::Role::PSGIServer
 
     method BUILDARGS(ClassName $class: @args)
     {
-        my %args = (@args);
-        my $hash = {};
-        $hash->{listen_port} = $args{port} if exists($args{port});
-        $hash->{listen_ip} = $args{host} if exists($args{host});
-        return { %$hash, %args };
+        my %hash = @args;
+        my ($port, $ip) = delete @hash{qw(port host)};
+        $hash{listen_port} = defined $port ? $port : 5000;
+        $hash{listen_ip}   = defined $ip   ? $ip   : '0.0.0.0';
+        \%hash;
     }
 
 
@@ -298,7 +298,7 @@ POEx::Role::PSGIServer - Encapsulates core PSGI server behavior
 
 =head1 VERSION
 
-version 1.102530
+version 1.102531
 
 =head1 SYNOPSIS
 
