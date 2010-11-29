@@ -39,4 +39,4 @@ requires:
   bytes: 0
 resources:
   repository: git://github.com/nperez/poex-role-psgiserver.git
-version: 1.103330
+version: 1.103331
