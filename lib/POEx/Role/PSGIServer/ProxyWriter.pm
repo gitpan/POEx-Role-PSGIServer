@@ -1,7 +1,4 @@
 package POEx::Role::PSGIServer::ProxyWriter;
-BEGIN {
-  $POEx::Role::PSGIServer::ProxyWriter::VERSION = '1.102531';
-}
 
 #ABSTRACT: Provides a push writer for PSGI applications to use
 use MooseX::Declare;
@@ -60,7 +57,7 @@ POEx::Role::PSGIServer::ProxyWriter - Provides a push writer for PSGI applicatio
 
 =head1 VERSION
 
-version 1.102531
+version 1.103330
 
 =head1 PUBLIC_ATTRIBUTES
 

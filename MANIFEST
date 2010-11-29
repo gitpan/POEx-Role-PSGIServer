@@ -10,8 +10,6 @@ lib/POEx/Role/PSGIServer/ProxyWriter.pm
 lib/POEx/Role/PSGIServer/Streamer.pm
 lib/POEx/Types/PSGIServer.pm
 t/lib/MyTester.pm
-t/release-pod-coverage.t
-t/release-pod-syntax.t
 t/streaming.t
 t/suite.t
 weaver.ini

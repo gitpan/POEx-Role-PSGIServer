@@ -12,7 +12,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.31
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.101900, CPAN::Meta::Converter version 2.101600'
+generated_by: 'Dist::Zilla version 4.102345, CPAN::Meta::Converter version 2.101600'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -31,7 +31,7 @@ requires:
   POE::Filter::Map: 0
   POE::Filter::Stream: 0
   POEx::Role::Streaming: 0
-  POEx::Role::TCPServer: 0
+  POEx::Role::TCPServer: 1.102740
   POEx::Types: 0
   Plack::Util: 0
   Scalar::Util: 0
@@ -39,4 +39,4 @@ requires:
   bytes: 0
 resources:
   repository: git://github.com/nperez/poex-role-psgiserver.git
-version: 1.102531
+version: 1.103330

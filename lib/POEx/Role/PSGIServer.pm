@@ -1,7 +1,4 @@
 package POEx::Role::PSGIServer;
-BEGIN {
-  $POEx::Role::PSGIServer::VERSION = '1.102531';
-}
 
 #ABSTRACT: Encapsulates core PSGI server behavior
 use MooseX::Declare;
@@ -49,13 +46,13 @@ role POEx::Role::PSGIServer
 
 
 
-    method BUILDARGS(ClassName $class: @args)
+    around BUILDARGS(ClassName $class: @args)
     {
-        my %hash = @args;
-        my ($port, $ip) = delete @hash{qw(port host)};
-        $hash{listen_port} = defined $port ? $port : 5000;
-        $hash{listen_ip}   = defined $ip   ? $ip   : '0.0.0.0';
-        \%hash;
+        my $hash = $class->$orig(@args);
+
+        $hash->{listen_port} ||= delete $hash->{port} || 5000;
+        $hash->{listen_ip}   ||= delete $hash->{host} || '0.0.0.0';
+        $hash;
     }
 
 
@@ -298,7 +295,7 @@ POEx::Role::PSGIServer - Encapsulates core PSGI server behavior
 
 =head1 VERSION
 
-version 1.102531
+version 1.103330
 
 =head1 SYNOPSIS
 
@@ -317,11 +314,11 @@ This Role has its roots firmly planted in POE::Component::Server::PSGI which pro
 
 =head1 CLASS_METHODS
 
-=head2 BUILDARGS
+=head2 around BUILDARGS
 
     (ClassName $class: @args)
 
-BUILDARGS is provided to translate from the expected Plack::Handler interface to POEx::Role::TCPServer's expected interface
+BUILDARGS is wrapped to translate from the expected Plack::Handler interface to POEx::Role::TCPServer's expected interface.
 
 =head1 PUBLIC_ATTRIBUTES
 

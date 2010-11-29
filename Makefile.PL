@@ -39,14 +39,14 @@ my %WriteMakefileArgs = (
     'POE::Filter::Map' => '0',
     'POE::Filter::Stream' => '0',
     'POEx::Role::Streaming' => '0',
-    'POEx::Role::TCPServer' => '0',
+    'POEx::Role::TCPServer' => '1.102740',
     'POEx::Types' => '0',
     'Plack::Util' => '0',
     'Scalar::Util' => '0',
     'aliased' => '0',
     'bytes' => '0'
   },
-  'VERSION' => '1.102531',
+  'VERSION' => '1.103330',
   'test' => {
     'TESTS' => 't/*.t'
   }

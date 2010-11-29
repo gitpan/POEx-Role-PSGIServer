@@ -1,7 +1,4 @@
 package POEx::Types::PSGIServer;
-BEGIN {
-  $POEx::Types::PSGIServer::VERSION = '1.102531';
-}
 
 #ABSTRACT: Provides type constraints for use in POEx::Role::PSGIServer
 use warnings;
@@ -81,7 +78,7 @@ POEx::Types::PSGIServer - Provides type constraints for use in POEx::Role::PSGIS
 
 =head1 VERSION
 
-version 1.102531
+version 1.103330
 
 =head1 TYPES
 
