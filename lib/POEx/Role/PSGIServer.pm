@@ -1,4 +1,7 @@
 package POEx::Role::PSGIServer;
+BEGIN {
+  $POEx::Role::PSGIServer::VERSION = '1.103341';
+}
 
 #ABSTRACT: Encapsulates core PSGI server behavior
 use MooseX::Declare;
@@ -258,7 +261,7 @@ POEx::Role::PSGIServer - Encapsulates core PSGI server behavior
 
 =head1 VERSION
 
-version 1.103340
+version 1.103341
 
 =head1 SYNOPSIS
 

@@ -46,7 +46,7 @@ my %WriteMakefileArgs = (
     'aliased' => '0',
     'bytes' => '0'
   },
-  'VERSION' => '1.103340',
+  'VERSION' => '1.103341',
   'test' => {
     'TESTS' => 't/*.t'
   }

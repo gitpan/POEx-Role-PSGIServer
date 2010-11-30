@@ -1,4 +1,7 @@
 package POEx::Role::PSGIServer::Streamer;
+BEGIN {
+  $POEx::Role::PSGIServer::Streamer::VERSION = '1.103341';
+}
 
 #ABSTRACT: Provides streaming filehandle PSGI implementation
 use MooseX::Declare;
@@ -58,7 +61,7 @@ POEx::Role::PSGIServer::Streamer - Provides streaming filehandle PSGI implementa
 
 =head1 VERSION
 
-version 1.103340
+version 1.103341
 
 =head1 PUBLIC_ATTRIBUTES
 
