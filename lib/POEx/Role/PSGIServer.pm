@@ -1,14 +1,10 @@
 package POEx::Role::PSGIServer;
-BEGIN {
-  $POEx::Role::PSGIServer::VERSION = '1.103331';
-}
 
 #ABSTRACT: Encapsulates core PSGI server behavior
 use MooseX::Declare;
 
 
-role POEx::Role::PSGIServer
-{
+role POEx::Role::PSGIServer {
     use aliased 'POEx::Role::Event';
 
     use MooseX::Types::Moose(':all');
@@ -24,22 +20,19 @@ role POEx::Role::PSGIServer
     use POEx::Role::PSGIServer::ProxyWriter;
 
 
-    has psgi_app =>
-    (
+    has psgi_app => (
         is => 'ro',
         isa => CodeRef,
         writer => 'register_service',
     );
 
 
-    has wheel_flushers =>
-    (
+    has wheel_flushers => (
         is      => 'ro',
         traits  => ['Hash'],
         isa     => 'HashRef',
         default => sub { {} },
-        handles =>
-        {
+        handles => {
             has_wheel_flusher   => 'exists',
             get_wheel_flusher   => 'get',
             set_wheel_flusher   => 'set',
@@ -49,8 +42,7 @@ role POEx::Role::PSGIServer
 
 
 
-    around BUILDARGS(ClassName $class: @args)
-    {
+    around BUILDARGS(ClassName $class: @args) {
         my $hash = $class->$orig(@args);
 
         $hash->{listen_port} ||= delete $hash->{port} || 5000;
@@ -59,38 +51,31 @@ role POEx::Role::PSGIServer
     }
 
 
-    after _start is Event
-    {
+    after _start is Event {
         $self->input_filter(POE::Filter::HTTP::Parser->new(type => 'server'));
         $self->output_filter(POE::Filter::Stream->new());
     }
 
 
-    method write(PSGIServerContext $c, Str $data)
-    {
-        if($c->{chunked})
-        {
+    method write(PSGIServerContext $c, Str $data) {
+        if($c->{chunked}) {
             my $len = sprintf "%X", do { use bytes; length($data) };
             $self->_write($c, "$len\r\n$data\r\n");
         }
-        else
-        {
+        else {
             $self->_write($c, $data);
         }
         
     }
 
 
-    method _write(PSGIServerContext $c, Str $data)
-    {
+    method _write(PSGIServerContext $c, Str $data) {
         $c->{wheel}->put($data);
     }
 
 
-    method close(PSGIServerContext $c)
-    {
-        if($c->{chunked})
-        {
+    method close(PSGIServerContext $c) {
+        if($c->{chunked}) {
             $self->_write($c, "0\r\n\r\n");
         }
 
@@ -100,27 +85,22 @@ role POEx::Role::PSGIServer
     }
 
 
-    method handle_socket_error(Str $action, Int $code, Str $message, WheelID $id) is Event
-    {
+    method handle_socket_error(Str $action, Int $code, Str $message, WheelID $id) is Event {
         $self->delete_wheel($id);
     }
 
 
-    method handle_listen_error(Str $action, Int $code, Str $message, WheelID $id) is Event
-    {
+    method handle_listen_error(Str $action, Int $code, Str $message, WheelID $id) is Event {
         die "Failed to '$action' to the specified port. Code: $code, Message: $message";
     }
 
 
 
-    method process_headers(PSGIServerContext $c, PSGIResponse $response)
-    {
+    method process_headers(PSGIServerContext $c, PSGIResponse $response) {
         my $headers = $response->[1];
         $headers->keys
-            ->each
-            (
-                sub
-                {
+            ->each(
+                sub {
                     my $index = shift;
                     return if $index == $#$headers;
                     my ($k, $v) = ($headers->[$index], $headers->[$index+1]) ;
@@ -134,14 +114,12 @@ role POEx::Role::PSGIServer
     }
 
 
-    method http_preamble(PSGIServerContext $c, PSGIResponse $response)
-    {
+    method http_preamble(PSGIServerContext $c, PSGIResponse $response) {
         $self->_write($c, "${\ $c->{protocol}} ${\ $response->[0] } ${ \status_message($response->[0]) }\r\n");
     }
 
 
-    method http_body_allowed(PSGIServerContext $c, PSGIResponse $response) returns (Bool)
-    {
+    method http_body_allowed(PSGIServerContext $c, PSGIResponse $response) returns (Bool) {
         my $code = $response->[0];
 
         my $no_body_allowed = ($c->{request}->method =~ /^head$/i)
@@ -159,8 +137,7 @@ role POEx::Role::PSGIServer
     }
 
 
-    method respond(PSGIServerContext $c, PSGIResponse $response) is Event
-    {
+    method respond(PSGIServerContext $c, PSGIResponse $response) is Event {
         $self->http_preamble($c, $response);
         $self->process_headers($c, $response);
         return unless ($self->http_body_allowed($c, $response));
@@ -170,25 +147,21 @@ role POEx::Role::PSGIServer
         $self->_write($c, "\r\n");
         
         my $body = $response->[2];
-        if ($body)
-        {
+        if ($body) {
             # If we have a real filehandle, build a Streamer
-            if (Plack::Util::is_real_fh($body))
-            {
+            if (Plack::Util::is_real_fh($body)) {
                 # flush and destroy the old wheel, since the Streamer will build a new one
                 $c->{wheel}->flush();
                 $self->delete_wheel($c->{wheel}->ID);
                 my $handle = (delete $c->{wheel})->get_input_handle();
-                my $streamer = POEx::Role::PSGIServer::Streamer->new
-                (
+                my $streamer = POEx::Role::PSGIServer::Streamer->new(
                     input_handle => $body,
                     output_handle => $handle,
                     server_context => $c,
                 );
             }
             # If we don't just iterate the lines
-            else 
-            {
+            else {
                 Plack::Util::foreach($body, sub{$self->write($c, @_)});
                 $self->close($c);
             }
@@ -201,16 +174,13 @@ role POEx::Role::PSGIServer
     }
 
 
-    method generate_push_writer(PSGIServerContext $c) returns (Object)
-    {
+    method generate_push_writer(PSGIServerContext $c) returns (Object) {
         return POEx::Role::PSGIServer::ProxyWriter->new(server_context => $c, proxied => $self);
     }
 
 
-    method generate_psgi_env(PSGIServerContext $c) returns (HashRef)
-    {
-        return req_to_psgi
-        (
+    method generate_psgi_env(PSGIServerContext $c) returns (HashRef) {
+        return req_to_psgi(
             $c->{request},
             SERVER_NAME         => $self->listen_ip,
             SERVER_PORT         => $self->listen_port,
@@ -222,15 +192,13 @@ role POEx::Role::PSGIServer
     }
 
 
-    method build_server_context(HTTPRequest $req, WheelID $wheel_id) returns (PSGIServerContext)
-    {
+    method build_server_context(HTTPRequest $req, WheelID $wheel_id) returns (PSGIServerContext) {
         my $version  = $req->header('X-HTTP-Version') || '0.9';
         my $protocol = "HTTP/$version";
         my $connection = $req->header('Connection') || '';
         my $keep_alive = ($version eq '1.1' && $connection ne 'close');
         
-        my $context =
-        {
+        my $context = {
             request => $req,
             wheel => $self->get_wheel($wheel_id),
             version => $version,
@@ -244,46 +212,38 @@ role POEx::Role::PSGIServer
     }
 
 
-    method handle_inbound_data(HTTPRequest $req, WheelID $wheel_id) is Event
-    {
+    method handle_inbound_data(HTTPRequest $req, WheelID $wheel_id) is Event {
         my $context = $self->build_server_context($req, $wheel_id);
         my $env = $self->generate_psgi_env($context);
         my $response = Plack::Util::run_app($self->psgi_app, $env);
 
-        if (ref($response) eq 'CODE')
-        {
+        if (ref($response) eq 'CODE') {
             $response->(sub { $self->respond($context, @_) });
         }
-        else
-        {
+        else {
             $self->yield('respond', $context, $response);
         }
     }
 
 
-    method run(CodeRef $app)
-    {
+    method run(CodeRef $app) {
         $self->register_service($app);
         POE::Kernel->run();
     }
 
-    method handle_on_flushed(WheelID $id) is Event
-    {
+    method handle_on_flushed(WheelID $id) is Event {
         if ($self->has_wheel_flusher($id)) {
             $self->get_wheel_flusher($id)->();
         }
         1;
     }
 
-    after delete_wheel(WheelID $id)
-    {
+    after delete_wheel(WheelID $id) {
         $self->clear_wheel_flusher($id);
     }
 
-    with 'POEx::Role::TCPServer' =>
-    {
-        -excludes =>
-        [
+    with 'POEx::Role::TCPServer' => {
+        -excludes => [
             qw/handle_socket_error handle_listen_error handle_on_flushed/
         ]
     };
@@ -298,7 +258,7 @@ POEx::Role::PSGIServer - Encapsulates core PSGI server behavior
 
 =head1 VERSION
 
-version 1.103331
+version 1.103340
 
 =head1 SYNOPSIS
 

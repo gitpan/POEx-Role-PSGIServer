@@ -1,27 +1,21 @@
 package POEx::Role::PSGIServer::ProxyWriter;
-BEGIN {
-  $POEx::Role::PSGIServer::ProxyWriter::VERSION = '1.103331';
-}
 
 #ABSTRACT: Provides a push writer for PSGI applications to use
 use MooseX::Declare;
 
-class POEx::Role::PSGIServer::ProxyWriter
-{
+class POEx::Role::PSGIServer::ProxyWriter {
     use MooseX::Types::Moose(':all');
     use POEx::Types::PSGIServer(':all');
 
 
-    has server_context =>
-    (
+    has server_context => (
         is => 'ro',
         isa => PSGIServerContext,
         required => 1
     );
 
 
-    has proxied =>
-    (
+    has proxied => (
         is => 'ro',
         isa => Object,
         weak_ref => 1,
@@ -29,20 +23,17 @@ class POEx::Role::PSGIServer::ProxyWriter
     );
 
 
-    method write($data)
-    {
+    method write($data) {
         $self->proxied->write($self->server_context, $data);
     }
 
 
-    method close()
-    {
+    method close() {
         $self->proxied->close($self->server_context);
     }
 
 
-    method poll_cb(CodeRef $coderef)
-    {
+    method poll_cb(CodeRef $coderef) {
         my $on_flush = sub { $self->$coderef() };
         my $id = $self->server_context->{wheel}->ID;
         $self->proxied->set_wheel_flusher($id => $on_flush);
@@ -60,7 +51,7 @@ POEx::Role::PSGIServer::ProxyWriter - Provides a push writer for PSGI applicatio
 
 =head1 VERSION
 
-version 1.103331
+version 1.103340
 
 =head1 PUBLIC_ATTRIBUTES
 

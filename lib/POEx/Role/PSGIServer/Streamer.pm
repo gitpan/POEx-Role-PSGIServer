@@ -1,13 +1,9 @@
 package POEx::Role::PSGIServer::Streamer;
-BEGIN {
-  $POEx::Role::PSGIServer::Streamer::VERSION = '1.103331';
-}
 
 #ABSTRACT: Provides streaming filehandle PSGI implementation
 use MooseX::Declare;
 
-class POEx::Role::PSGIServer::Streamer
-{
+class POEx::Role::PSGIServer::Streamer {
     use POE::Filter::Map;
     use POE::Filter::Stream;
     use MooseX::Types::Moose(':all');
@@ -22,15 +18,11 @@ class POEx::Role::PSGIServer::Streamer
     with 'POEx::Role::Streaming';
 
 
-    method _build_filter
-    {
-        if($self->server_context->{chunked})
-        {
-            POE::Filter::Map->new
-            (
+    method _build_filter {
+        if($self->server_context->{chunked}) {
+            POE::Filter::Map->new(
                 Get => sub { $_ },
-                Put => sub
-                { 
+                Put => sub { 
                     my $data = shift;
                     return $data if $data =~ /0\r\n\r\n/;
                     my $len = sprintf "%X", do { use bytes; length($data) };
@@ -38,17 +30,14 @@ class POEx::Role::PSGIServer::Streamer
                 }
             );
         }
-        else
-        {
+        else {
             return POE::Filter::Stream->new();
         }
     }
 
 
-    around done_writing
-    {
-        if($self->server_context->{chunked} && !$self->closed_chunk)
-        {
+    around done_writing {
+        if($self->server_context->{chunked} && !$self->closed_chunk) {
             $self->closed_chunk(1);
             $self->put("0\r\n\r\n");
             return;
@@ -69,7 +58,7 @@ POEx::Role::PSGIServer::Streamer - Provides streaming filehandle PSGI implementa
 
 =head1 VERSION
 
-version 1.103331
+version 1.103340
 
 =head1 PUBLIC_ATTRIBUTES
 

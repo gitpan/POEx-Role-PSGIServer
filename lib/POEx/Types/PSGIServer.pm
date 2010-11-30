@@ -1,14 +1,10 @@
 package POEx::Types::PSGIServer;
-BEGIN {
-  $POEx::Types::PSGIServer::VERSION = '1.103331';
-}
 
 #ABSTRACT: Provides type constraints for use in POEx::Role::PSGIServer
 use warnings;
 use strict;
 
-use MooseX::Types -declare => 
-[qw/
+use MooseX::Types -declare => [qw/
     PSGIServerContext
     PSGIResponse
     PSGIBody
@@ -26,8 +22,7 @@ use Scalar::Util;
 
 
 subtype PSGIServerContext,
-    as Dict
-    [
+    as Dict [
         request => HTTPRequest,
         wheel => Optional[Wheel],
         version => Str,
@@ -45,8 +40,7 @@ subtype HTTPRequest,
 
 subtype HTTPCode,
     as Int,
-    where 
-    {
+    where {
         HTTP::Status::is_info($_) 
         || HTTP::Status::is_success($_)
         || HTTP::Status::is_redirect($_)
@@ -56,16 +50,14 @@ subtype HTTPCode,
 
 subtype PSGIBody,
     as Ref,
-    where
-    {
+    where {
         Plack::Util::is_real_fh($_)
         || (Scalar::Util::blessed($_) && ($_->can('getline') && $_->can('close')))
     };
 
 
 subtype PSGIResponse,
-    as Tuple
-    [
+    as Tuple [
         HTTPCode,
         ArrayRef,
         Optional[ArrayRef|PSGIBody]
@@ -81,7 +73,7 @@ POEx::Types::PSGIServer - Provides type constraints for use in POEx::Role::PSGIS
 
 =head1 VERSION
 
-version 1.103331
+version 1.103340
 
 =head1 TYPES
 
