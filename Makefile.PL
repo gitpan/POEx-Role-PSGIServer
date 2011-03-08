@@ -35,7 +35,7 @@ my %WriteMakefileArgs = (
     'MooseX::Types' => '0',
     'MooseX::Types::Moose' => '0',
     'MooseX::Types::Structured' => '0',
-    'POE::Filter::HTTP::Parser' => '0',
+    'POE::Filter::HTTP::Parser' => '1.06',
     'POE::Filter::Map' => '0',
     'POE::Filter::Stream' => '0',
     'POEx::Role::Streaming' => '0',
@@ -46,7 +46,7 @@ my %WriteMakefileArgs = (
     'aliased' => '0',
     'bytes' => '0'
   },
-  'VERSION' => '1.103341',
+  'VERSION' => '1.110670',
   'test' => {
     'TESTS' => 't/*.t'
   }

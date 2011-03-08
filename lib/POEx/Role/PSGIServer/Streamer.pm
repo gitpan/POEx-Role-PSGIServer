@@ -1,6 +1,6 @@
 package POEx::Role::PSGIServer::Streamer;
 BEGIN {
-  $POEx::Role::PSGIServer::Streamer::VERSION = '1.103341';
+  $POEx::Role::PSGIServer::Streamer::VERSION = '1.110670';
 }
 
 #ABSTRACT: Provides streaming filehandle PSGI implementation
@@ -61,7 +61,7 @@ POEx::Role::PSGIServer::Streamer - Provides streaming filehandle PSGI implementa
 
 =head1 VERSION
 
-version 1.103341
+version 1.110670
 
 =head1 PUBLIC_ATTRIBUTES
 
@@ -97,7 +97,7 @@ Nicholas Perez <nperez@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Infinity Interactive.
+This software is copyright (c) 2011 by Infinity Interactive.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
